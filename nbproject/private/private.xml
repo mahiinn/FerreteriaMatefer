@@ -2,13 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/Users/Maria/Documents/NetBeansProjects/FerreteriaMatefer/src/com/controlador/dao/CtrlUsuarioDao.java</file>
-            <file>file:/C:/Users/Maria/Documents/NetBeansProjects/FerreteriaMatefer/src/com/controlador/view/CtrlProductView.java</file>
-            <file>file:/C:/Users/Maria/Documents/NetBeansProjects/FerreteriaMatefer/src/com/vista/gestionProducto.java</file>
-            <file>file:/C:/Users/Maria/Documents/NetBeansProjects/FerreteriaMatefer/src/com/controlador/view/CtrlUserView.java</file>
-            <file>file:/C:/Users/Maria/Documents/NetBeansProjects/FerreteriaMatefer/src/com/controlador/dao/CtrlProductoDao.java</file>
-            <file>file:/C:/Users/Maria/Documents/NetBeansProjects/FerreteriaMatefer/src/com/Idao/IUsuarioDAO.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>
