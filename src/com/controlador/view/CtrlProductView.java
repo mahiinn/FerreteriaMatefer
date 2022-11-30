@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.table.DefaultTableModel;
 
-
 public class CtrlProductView {
     
     private PreparedStatement ps;
@@ -15,7 +14,6 @@ public class CtrlProductView {
     private DefaultTableModel DT;
     private final String SQL_SELECT_PRODUCTOS = "SELECT * FROM product";
     
-    //No se había realizado la conexion a la base de datos xd
     public CtrlProductView() {
         ps = null;
         con = new Conexion();

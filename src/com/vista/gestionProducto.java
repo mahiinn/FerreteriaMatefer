@@ -382,7 +382,9 @@ public class gestionProducto extends javax.swing.JInternalFrame {
 
         if (!dao.existeProduct(obj.getReferencia().trim())) {
             if (dao.createProduct(obj)) {
-
+                if(dao.verificarCodigoInventario(codigo)==0){
+                    dao.insertarProductoInventario(codigo);
+                }
                 JOptionPane.showMessageDialog(null, "Producto registrado con éxito.");
 
             } else {

@@ -466,7 +466,7 @@ public class principal extends javax.swing.JFrame {
         
         count();
         
-        entrada in = new entrada();
+        entrada in = new entrada(user);
         this.desktopPane.add(in);
         in.show();
         try {
@@ -481,7 +481,7 @@ public class principal extends javax.swing.JFrame {
         
         count();
         
-        salida out = new salida();
+        salida out = new salida(user);
         this.desktopPane.add(out);
         out.show();
         try {
@@ -590,7 +590,7 @@ public class principal extends javax.swing.JFrame {
     private javax.swing.JButton bSalidas;
     private javax.swing.JButton b_editUser;
     private javax.swing.JButton b_logout;
-    private javax.swing.JDesktopPane desktopPane;
+    public static javax.swing.JDesktopPane desktopPane;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
