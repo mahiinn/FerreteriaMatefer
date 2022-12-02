@@ -1,4 +1,3 @@
-
 package com.vista;
 
 import java.beans.PropertyVetoException;
@@ -451,7 +450,7 @@ public class principal extends javax.swing.JFrame {
         
         count();
         
-        gestionProducto vnp = new gestionProducto();
+        gestionProducto vnp = new gestionProducto(user);
         this.desktopPane.add(vnp);
         vnp.show();
         try {

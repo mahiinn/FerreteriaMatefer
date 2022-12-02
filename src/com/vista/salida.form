@@ -197,6 +197,9 @@
           <Image iconType="3" name="/com/img/nuevo_roll.png"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jbt_nuevoMousePressed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jbt_guardar">
       <Properties>
@@ -216,6 +219,9 @@
           <Image iconType="3" name="/com/img/save_roll.png"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="mousePressed" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jbt_guardarMousePressed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel3">
       <Properties>

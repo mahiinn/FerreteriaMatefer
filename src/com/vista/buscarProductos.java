@@ -1,29 +1,20 @@
 package com.vista;
 
-import com.controlador.dao.CtrlProductoDao;
-import javax.swing.table.DefaultTableModel;
+import com.controlador.dao.CtrlBuscarProductoDao;
 
 public class buscarProductos extends javax.swing.JInternalFrame {
     
-    private final CtrlProductoDao cpd;
-    
-    DefaultTableModel DT = new DefaultTableModel(){
-        @Override
-        public boolean isCellEditable(int row, int column) {
-            return false;
-        }
-
-    };
-    
+    private final CtrlBuscarProductoDao cbp;
+       
     public buscarProductos() {
         initComponents();
-        cpd = new CtrlProductoDao();
+        cbp = new CtrlBuscarProductoDao();
         tabla.getColumnModel();
         listar();
     }
     
     private void listar(){
-        tabla.setModel(cpd.getDatosProductosBusqueda());
+        tabla.setModel(cbp.getDatosProductosBusqueda());
     }
     
     @SuppressWarnings("unchecked")
@@ -112,16 +103,16 @@ public class buscarProductos extends javax.swing.JInternalFrame {
     private void txt_busquedaCaretUpdate(javax.swing.event.CaretEvent evt) {//GEN-FIRST:event_txt_busquedaCaretUpdate
         if(jrb_nombre.isSelected()){
             String inf = txt_busqueda.getText();
-            tabla.setModel(cpd.getDatoP(1,inf));
+            tabla.setModel(cbp.getDatoP(1,inf));
         }
         
         if(jrb_codigo.isSelected()){
             String inf = txt_busqueda.getText();
-            tabla.setModel(cpd.getDatoP(2,inf));
+            tabla.setModel(cbp.getDatoP(2,inf));
         }
         
         if(txt_busqueda.getText().isEmpty()){
-            tabla.setModel(cpd.getDatosProductosBusqueda());
+            tabla.setModel(cbp.getDatosProductosBusqueda());
         }
     }//GEN-LAST:event_txt_busquedaCaretUpdate
 

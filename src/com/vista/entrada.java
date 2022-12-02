@@ -295,7 +295,6 @@ public class entrada extends javax.swing.JInternalFrame {
         en.setFactura(txt_nfactura.getText());
         en.setNoProducto(txt_codigo.getText());
         en.setCantidad(Integer.parseInt(txt_cantidad.getText()));
-
         Date fechaa = jdc_fecha.getDate();
         long d = fechaa.getTime();
         java.sql.Date fecha_sql = new java.sql.Date(d);
@@ -303,7 +302,7 @@ public class entrada extends javax.swing.JInternalFrame {
         en.setFecha(fecha_sql);
 
         en.setId(usr.getIdUser());
-        en.setId(usr.getTypeUserId());
+        en.setIdTypeUser(usr.getTypeUserId());
 
         if (num == 0) {
             int respuesta = facade.registrarNuevaEntrada(en);

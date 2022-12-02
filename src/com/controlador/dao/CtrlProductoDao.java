@@ -3,6 +3,7 @@ package com.controlador.dao;
 import com.idao.IProductoDAO;
 import com.conexion.Conexion;
 import com.modelo.Producto;
+import com.modelo.Usuario;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,18 +17,11 @@ public class CtrlProductoDao implements IProductoDAO {
     private ResultSet rs;
     private final Conexion con;
     private DefaultTableModel DT;
-    private final String 
-            SQL_INSERT_PRODUCTOS = "INSERT INTO product "
+    private final String SQL_INSERT_PRODUCTOS = "INSERT INTO producto "
             + "(referencia,descripcion,precio) values (?,?,?)";
-    private final String 
-            SQL_UPDATE_PRODUCTOS = "UPDATE product SET "
+    private final String SQL_UPDATE_PRODUCTOS = "UPDATE producto SET "
             + "referencia=?,descripcion=?, precio=? WHERE referencia=?";
-    private final String 
-            SQL_DELETE_PRODUCTO = "DELETE from product WHERE referencia =?";
-    private final String 
-            SQL_BUSCAR_PRODUCTOS = "SELECT p.noProduct, p.descripcion, "
-            + "movstock FROM product AS p INNER JOIN movimiento ON "
-            + "p.noProduct = noProduct ORDER BY p.noProduct ASC";
+    private final String SQL_DELETE_PRODUCTO = "DELETE from producto WHERE referencia =?";
 
     public CtrlProductoDao() {
         ps = null;
@@ -103,7 +97,7 @@ public class CtrlProductoDao implements IProductoDAO {
     public boolean existeProduct(String referencia) {
 
         boolean respuesta = false;
-        sql = "Select referencia from product where referencia = '" + referencia + "';";
+        sql = "Select referencia from producto where referencia = '" + referencia + "';";
         Statement st;
 
         try {
@@ -131,14 +125,17 @@ public class CtrlProductoDao implements IProductoDAO {
     }
 
     @Override
-    public void insertarProductoInventario(String codigoProducto) {
-        int res;
+    public void insertarProductoInventario(String codigoProducto,Usuario usr) {
+        
         try {
-            ps = con.Connect().prepareStatement("CALL NUEVO_PRODUCTO('"+codigoProducto+"')");
+            
+            ps = con.Connect().prepareStatement("CALL NUEVO_PRODUCTO"
+                    + "('" + getCodigo(codigoProducto) + "', '" + usr.getUserName() + "', '" + usr.getTypeNombre() + "')");
             ps.executeQuery();
+            
         } catch (SQLException e) {
-            System.err.println("Error al insertar registro en la tabla inventario." +e.getMessage());
-        } finally{
+            System.err.println("Error al insertar registro en la tabla inventario." + e.getMessage());
+        } finally {
             ps = null;
             con.Disconnect();
         }
@@ -146,96 +143,46 @@ public class CtrlProductoDao implements IProductoDAO {
 
     @Override
     public int verificarCodigoInventario(String codigo) {
-        int res=0;
+        int res = 0;
         try {
-            ps = con.Connect().prepareStatement("SELECT count(noProducto) from movimiento where noProduct='"+codigo+"'");
+            ps = con.Connect().prepareStatement("SELECT count(noProducto) from movimiento where noProducto='" + getCodigo(codigo) + "'");
             rs = ps.executeQuery();
-            
-            while(rs.next()){
+
+            while (rs.next()) {
                 res = rs.getInt(1);
             }
-            
+
         } catch (SQLException e) {
-            System.err.println("Error al devolver cantidad de registros." +e.getMessage());
-        } finally{
+            System.err.println("Error al devolver cantidad de registros." + e.getMessage());
+        } finally {
             ps = null;
             con.Disconnect();
         }
         return res;
     }
-    
-    private DefaultTableModel setTitulosProductosBuscados(){
-        DT = new DefaultTableModel(){
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-            
-        };
-        DT.addColumn("Código");
-        DT.addColumn("Referencia");
-        DT.addColumn("Descripción");
-        DT.addColumn("Stock Actual");
-        
-        return DT;
-    }
-    
-    public DefaultTableModel getDatosProductosBusqueda(){
-        
+
+    private int getCodigo(String referencia) {
+
+        int codigo = 0;
         try {
-            setTitulosProductosBuscados();
-            ps = con.Connect().prepareStatement(SQL_BUSCAR_PRODUCTOS);
+
+            ps = con.Connect().prepareStatement("SELECT noProducto FROM producto WHERE referencia = '" + referencia + "';");
             rs = ps.executeQuery();
-            Object[] fila = new Object[4];
             while(rs.next()){
-                fila[0] = rs.getString(1);
-                fila[1] = rs.getString(2);
-                fila[2] = rs.getInt(3);
-                DT.addRow(fila);
+                codigo = rs.getInt(1);
             }
+                
+            return codigo;
+            
         } catch (SQLException e) {
-            
-            System.err.println("Error al listar los datos."+e.getMessage());
-            
-        } finally{
+
+            System.err.println("Error al devolver." + e.getMessage());
+
+        } finally {
             ps = null;
-            rs = null;
             con.Disconnect();
         }
-        return DT;
-    }
-    
-    public DefaultTableModel getDatoP(int crt, String inf){
-        
-        String SQL;
-        if (crt==2){
-            SQL = "SELECT pro_codigo, pro_descripcion, inv_stock "
-                    + "FROM producto AS p INNER JOIN inventario ON "
-                    + "pro_codigo = inv_pro_codigo where pro_codigo like '"+inf+"'";
-        }
-        else {
-            SQL = "SELECT pro_codigo, pro_descripcion, inv_stock "
-                    + "FROM producto INNER JOIN inventario ON "
-                    + "pro_codigo = inv_pro_codigo where pro_descripcion like '" +inf + "%'";
-        }
-        try {
-            setTitulosProductosBuscados();
-            ps = con.Connect().prepareStatement(SQL);
-            rs = ps.executeQuery();
-            Object[] fila = new Object[4];
-            while(rs.next()){
-                fila[0] = rs.getString(1);
-                fila[1] = rs.getString(2);
-                fila[2] = rs.getInt(3);
-                DT.addRow(fila);
-            }
-        } catch (SQLException e) {
-            System.err.println("Error al listar los datos."+e.getMessage());
-        } finally{
-            ps = null;
-            rs = null;
-            con.Disconnect();
-        }
-        return DT;
+
+        return codigo;
     }
 }

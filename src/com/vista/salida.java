@@ -1,26 +1,33 @@
 package com.vista;
 
-import com.modelo.Usuario;
+import com.modelo.Salida;
 import com.modelo.facade.inOutStockFacade;
+import java.awt.Dimension;
+import java.util.Date;
+import javax.swing.JOptionPane;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.TableColumnModel;
+import static com.vista.principal.desktopPane;
+import com.modelo.Usuario;
 
 public class salida extends javax.swing.JInternalFrame {
-
-    Usuario user;
+    
     TableColumnModel columnModel;
     public static int enviar = 0;
     int num = 0;
     private final inOutStockFacade facade;
+    Usuario usr;
+    
     public salida(Usuario obj) {
         
+        facade = new inOutStockFacade();
         initComponents();
         ((BasicInternalFrameUI) this.getUI()).setNorthPane(null);
-        this.user = obj;
         columnModel = jtb_salida.getColumnModel();
-        this.listar();
-        this.iniciar();
-        facade = new inOutStockFacade();
+        listar();
+        iniciar();
+        this.usr = obj;
+        
     }
 
     @SuppressWarnings("unchecked")
@@ -78,6 +85,11 @@ public class salida extends javax.swing.JInternalFrame {
         jbt_nuevo.setFocusPainted(false);
         jbt_nuevo.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/img/nuevo_press.png"))); // NOI18N
         jbt_nuevo.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/com/img/nuevo_roll.png"))); // NOI18N
+        jbt_nuevo.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jbt_nuevoMousePressed(evt);
+            }
+        });
 
         jbt_guardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/img/save_norm.png"))); // NOI18N
         jbt_guardar.setBorder(null);
@@ -86,6 +98,11 @@ public class salida extends javax.swing.JInternalFrame {
         jbt_guardar.setFocusPainted(false);
         jbt_guardar.setPressedIcon(new javax.swing.ImageIcon(getClass().getResource("/com/img/save_press.png"))); // NOI18N
         jbt_guardar.setRolloverIcon(new javax.swing.ImageIcon(getClass().getResource("/com/img/save_roll.png"))); // NOI18N
+        jbt_guardar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jbt_guardarMousePressed(evt);
+            }
+        });
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel3.setText("Descripción del Producto *");
@@ -207,20 +224,31 @@ public class salida extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jtb_salidaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtb_salidaMouseClicked
-
+        guardar();
     }//GEN-LAST:event_jtb_salidaMouseClicked
 
     private void jbt_buscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbt_buscarActionPerformed
-//        enviar = 1;
-//
-//        Frm_BuscarProductos C = new Frm_BuscarProductos();
-//        Frm_Principal.contenedor.add(C);
-//        Dimension desktopSize = contenedor.getSize();
-//        Dimension FrameSize = C.getSize();
-//        C.setLocation((desktopSize.width - FrameSize.width)/2, (desktopSize.height- FrameSize.height)/2);
-//        C.toFront();
-//        C.setVisible(true);
+        
+        enviar = 1;
+        
+        buscarProductos C = new buscarProductos();
+        principal.desktopPane.add(C);
+        Dimension desktopSize = desktopPane.getSize();
+        Dimension FrameSize = C.getSize();
+        C.setLocation((desktopSize.width - FrameSize.width)/2, (desktopSize.height- FrameSize.height)/2);
+        C.toFront();
+        C.setVisible(true);
     }//GEN-LAST:event_jbt_buscarActionPerformed
+
+    private void jbt_nuevoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbt_nuevoMousePressed
+        activar();
+        limpiar();
+        jbt_guardar.setEnabled(true);
+    }//GEN-LAST:event_jbt_nuevoMousePressed
+
+    private void jbt_guardarMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jbt_guardarMousePressed
+        this.guardar();
+    }//GEN-LAST:event_jbt_guardarMousePressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -244,8 +272,9 @@ public class salida extends javax.swing.JInternalFrame {
     // End of variables declaration//GEN-END:variables
     
     private void listar(){
-        jtb_salida.setModel(facade.getDatosEntradas());
+        jtb_salida.setModel(facade.getDatosSalida());
         columnModel.getColumn(3).setPreferredWidth(350);
+
     }
     
     private void iniciar(){
@@ -254,5 +283,63 @@ public class salida extends javax.swing.JInternalFrame {
         jdc_fecha.setEnabled(false);
         jbt_buscar.setEnabled(false);
         jbt_guardar.setEnabled(false);
+    }
+    
+    private void activar(){
+        txt_nfactura.setEnabled(true);
+        txt_cantidad.setEnabled(true);
+        jdc_fecha.setEnabled(true);
+        jbt_buscar.setEnabled(true);
+        jbt_guardar.setEnabled(true);
+        txt_nfactura.requestFocus();
+        jbt_guardar.setEnabled(true);
+    }
+    
+    private void limpiar(){
+        txt_nfactura.setText("");
+        txt_codigo.setText("");
+        txt_descripcion.setText("");
+        txt_cantidad.setText("");
+        jdc_fecha.setDate(null);
+        txt_nfactura.requestFocus();
+        jtb_salida.clearSelection();
+    }
+    
+    private void guardar(){
+        String nfac = txt_nfactura.getText();
+        String codigo = txt_codigo.getText();
+        int cantidad = Integer.parseInt(txt_cantidad.getText());
+        Date fechaa = jdc_fecha.getDate();
+        long d = fechaa.getTime();
+        java.sql.Date fecha_sql = new java.sql.Date(d);
+        
+        int stock = facade.verificarStock(codigo);
+        
+        Salida obj = new Salida();
+        
+        obj.setFactura(nfac);
+        obj.setNoProducto(codigo);
+        obj.setCantidad(cantidad);
+        obj.setFecha(fecha_sql);
+        obj.setIdTypeUser(usr.getIdUser());
+        obj.setId(usr.getIdUser());
+        if(cantidad > stock){
+            JOptionPane.showMessageDialog(null, "¡No hay stock suficiente!");
+            txt_cantidad.setText("");
+            txt_cantidad.requestFocus();
+        }
+        
+        
+        else{
+            if(num == 0){
+                int respuesta = facade.registrarSalida(obj);
+                if(respuesta > 0){
+                    listar();
+                    limpiar();
+                    iniciar();
+                }
+            }
+        }
+        
     }
 }

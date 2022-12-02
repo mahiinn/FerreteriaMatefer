@@ -15,8 +15,8 @@ public class CtrlUserView {
     private final Conexion con;
     private DefaultTableModel DT;
     private final String SQL_SELECT_USERS = "SELECT u.idUser,u.fullname,u.username,t.nombre "
-            + "FROM user AS u INNER JOIN Type_Users AS t ON u.Type_Users_id = t.id";
-    private final String SQL_SELECT_TYPE_USERS = "SELECT nombre FROM Type_Users";
+            + "FROM user AS u INNER JOIN Type_User AS t ON u.Type_User_id = t.id";
+    private final String SQL_SELECT_TYPE_USERS = "SELECT nombre FROM Type_User";
     private Statement st;
     
     public CtrlUserView() {

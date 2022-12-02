@@ -5,6 +5,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 import com.controlador.dao.CtrlProductoDao;
 import com.controlador.view.CtrlProductView;
+import com.modelo.Usuario;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableColumnModel;
 
@@ -14,8 +15,9 @@ public class gestionProducto extends javax.swing.JInternalFrame {
     private final TableColumnModel columnModel;
     private final CtrlProductView cpv; //Controlador de la vista
     private int num = 0;
+    private Usuario usr;
 
-    public gestionProducto() {
+    public gestionProducto(Usuario obj) {
 
         //Incio de los componentes de la vista
         initComponents();
@@ -24,6 +26,7 @@ public class gestionProducto extends javax.swing.JInternalFrame {
         columnModel = jtb_productos.getColumnModel();
         cpv = new CtrlProductView();
         cpdao = new CtrlProductoDao();
+        this.usr = obj;
 
         //Inciciacion de metodos para la experiencia de usuario
         this.listar(); //Muestra y da formato a los valores de la base de datos
@@ -383,7 +386,7 @@ public class gestionProducto extends javax.swing.JInternalFrame {
         if (!dao.existeProduct(obj.getReferencia().trim())) {
             if (dao.createProduct(obj)) {
                 if(dao.verificarCodigoInventario(codigo)==0){
-                    dao.insertarProductoInventario(codigo);
+                    dao.insertarProductoInventario(codigo,usr);
                 }
                 JOptionPane.showMessageDialog(null, "Producto registrado con éxito.");
 

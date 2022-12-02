@@ -14,24 +14,24 @@ public class CtrlUsuarioDao implements IUsuarioDAO {
 
     //Registro de usuarios
     private final String SQL_CREATE_USERS = "INSERT INTO User (fullname,"
-            + "Type_Users_id,password,username) VALUES(?,?,?,?)";
+            + "Type_User_id,password,username) VALUES(?,?,?,?)";
 
     //Actualizacion de usuarios
     private final String SQL_UPDATE_USERS = "UPDATE user SET fullname=?, "
-            + "Type_Users_id=?, password=?, username=? WHERE username=?";
+            + "Type_User_id=?, password=?, username=? WHERE username=?";
 
     //Loguear usuario
     private final String SQL_READ_USERS = "SELECT \n"
             + "    u.idUser,\n"
             + "    u.fullname,\n"
             + "    u.username,\n"
-            + "    u.Type_Users_id,\n"
+            + "    u.Type_User_id,\n"
             + "    u.password,\n"
             + "    t.nombre\n"
             + "FROM\n"
             + "    user AS u\n"
             + "        INNER JOIN\n"
-            + "    Type_Users AS t ON u.Type_Users_id = t.id\n"
+            + "    Type_User AS t ON u.Type_User_id = t.id\n"
             + "WHERE\n"
             + "    username = ?;";
     

@@ -16,12 +16,12 @@ public class CtrlSalidaDao {
     private DefaultTableModel DT;
     private final String 
             SQL_INSERT_SALIDA = "INSERT INTO salida "
-            + "(sal_factura, sal_pro_codigo, sal_fecha, sal_cantidad) "
+            + "(idFactura, noProducto, fecha, cantidad,User_idUser,User_Type_User_id) "
             + "values (?,?,?,?)";
     private final String 
-            SQL_SELECT_SALIDA = "SELECT sal_factura, sal_fecha, sal_pro_codigo,"
-            + " pro_descripcion, sal_cantidad "
-            + "FROM salida INNER JOIN producto ON sal_pro_codigo = pro_codigo";
+            SQL_SELECT_SALIDA = "SELECT s.idFactura, s.fecha, s.noProducto,"
+            + " p.descripcion, s.cantidad "
+            + "FROM salida AS s INNER JOIN producto AS p ON s.noProducto = p.noProducto";
     
     public CtrlSalidaDao(){
         
@@ -102,7 +102,7 @@ public class CtrlSalidaDao {
         
         int res=0;
         try {
-            ps = con.Connect().prepareStatement("SELECT inv_stock from inventario where inv_pro_codigo='"+codigo+"'");
+            ps = con.Connect().prepareStatement("SELECT movstock from movimiento where noProducto='"+codigo+"'");
             rs = ps.executeQuery();
             
             while(rs.next()){

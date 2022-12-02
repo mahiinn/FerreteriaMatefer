@@ -16,7 +16,7 @@ public class CtrlEntradaDao {
     private ResultSet rs;
 
     private final String SQL_INSERT_ENTRADA = "INSERT INTO entrada "
-            + "(idFactura, noProduct, fecha, cantidad, User_idUser, User_Type_Users_id) "
+            + "(idFactura, noProducto, fecha, cantidad, User_idUser, User_Type_User_id) "
             + "values (?,?,?,?,?,?)";
 
     private final String SQL_SELECT_ENTRADA = "SELECT \n"
@@ -24,11 +24,11 @@ public class CtrlEntradaDao {
             + "FROM\n"
             + "    entrada AS e\n"
             + "		INNER JOIN\n"
-            + "	product AS p ON e.noProduct = p.noProduct\n"
+            + "	producto AS p ON e.noProducto = p.noProducto\n"
             + "        INNER JOIN\n"
             + "    user AS u ON User_idUser = u.idUser\n"
             + "        INNER JOIN\n"
-            + "    Type_Users AS t ON u.Type_Users_id = t.id;";
+            + "    Type_User AS t ON u.Type_User_id = t.id;";
 
     public CtrlEntradaDao() {
 
@@ -83,18 +83,19 @@ public class CtrlEntradaDao {
         return DT;
     }
 
-    public int registrarEntrada(String nfactura, String referenciaProduct,
+    public int registrarEntrada(String nfactura, String noProducto,
             Date fecha, int cantidad, int idUser, int idTypeUser) {
         int res = 0;
         try {
             ps = con.Connect().prepareStatement(SQL_INSERT_ENTRADA);
             ps.setString(1, nfactura);
-            ps.setString(2, referenciaProduct);
+            ps.setInt(2, Integer.parseInt(noProducto));
             ps.setDate(3, fecha);
             ps.setInt(4, cantidad);
             ps.setInt(5, idUser);
             ps.setInt(6, idTypeUser);
             res = ps.executeUpdate();
+            
             if (res > 0) {
                 JOptionPane.showMessageDialog(null, "Entrada realizada con éxito.");
             }

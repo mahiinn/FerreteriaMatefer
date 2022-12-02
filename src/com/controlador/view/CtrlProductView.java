@@ -12,7 +12,7 @@ public class CtrlProductView {
     private ResultSet rs;
     private final Conexion con;
     private DefaultTableModel DT;
-    private final String SQL_SELECT_PRODUCTOS = "SELECT * FROM product";
+    private final String SQL_SELECT_PRODUCTOS = "SELECT * FROM producto";
     
     public CtrlProductView() {
         ps = null;

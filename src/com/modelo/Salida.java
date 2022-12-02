@@ -1,14 +1,17 @@
 package com.modelo;
 
+import java.sql.Date;
+
 public class Salida {
     
     private int idSalida;
     private int id; //id de usuario que realizo la salida
     private int idTypeUser; //rol del usuario
     private String noProducto; // codigo del producto (Referencia)
-    private String fecha; // Fecha y hora del movimiento
+    private Date fecha; // Fecha y hora del movimiento
     private int cantidad; // cantidad que salio
     private String motivo; // motivo de la salida
+    private String factura;
 
     public int getIdSalida() {
         return idSalida;
@@ -42,11 +45,11 @@ public class Salida {
         this.noProducto = noProducto;
     }
 
-    public String getFecha() {
+    public Date getFecha() {
         return fecha;
     }
 
-    public void setFecha(String fecha) {
+    public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
 
@@ -64,6 +67,14 @@ public class Salida {
 
     public void setMotivo(String motivo) {
         this.motivo = motivo;
+    }
+
+    public String getFactura() {
+        return factura;
+    }
+
+    public void setFactura(String factura) {
+        this.factura = factura;
     }
     
     
